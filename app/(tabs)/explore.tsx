@@ -77,19 +77,15 @@ export default function TabTwoScreen() {
       </Collapsible>
       <Collapsible title="Animations">
         <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
+          This screen includes a small UI demo section from the starter template. If you don&apos;t
+          need animations for your project, keep the UI simple to reduce app size and improve
+          first-load performance.
         </ThemedText>
         {Platform.select({
           ios: (
             <ThemedText>
               The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
+              component provides a lightweight header + scroll layout.
             </ThemedText>
           ),
         })}

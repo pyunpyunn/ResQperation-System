@@ -1,98 +1,128 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, Text, View, FlatList, ActivityIndicator, SafeAreaView, StatusBar, RefreshControl } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+// 1. Updated Interface to match your Postman/DB exactly
+interface Household {
+  HouseholdID: number;
+  HouseholdHeadName: string;
+  Barangay: string;
+  PhoneNumber: string;
+}
 
-export default function HomeScreen() {
+export default function RescuerDashboard() {
+  const [isLoading, setLoading] = useState(true);
+  const [isRefreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState<Household[]>([]);
+
+// Update the port to 9000 here
+const API_URL = 'http://192.168.110.113:9000/api/households';
+
+  const fetchData = async () => {
+  try {
+    const response = await fetch(API_URL, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // This is the key: if it's not JSON, it will show us the text instead of crashing
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      const json = await response.json();
+      if (json.data) {
+        setData(json.data);
+      }
+    } else {
+      const text = await response.text();
+      console.log("Server returned HTML instead of JSON. Check your URL or Firewall.");
+      console.log("Response starts with:", text.substring(0, 100));
+    }
+  } catch (error) {
+    console.error("Connection Error:", error);
+  } finally {
+    setLoading(false);
+    setRefreshing(false);
+  }
+};
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+  }, []);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.header}>
+        <Text style={styles.title}>ResQperation: Rescuer</Text>
+        <Text style={styles.subtitle}>Incident Monitoring List</Text>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      {isLoading ? (
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color="#FF4444" />
+          <Text style={{marginTop: 10, color: '#666'}}>Connecting to ResQperation Server...</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          // 2. Use HouseholdID as the unique key
+          keyExtractor={(item) => item.HouseholdID.toString()} 
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <View style={styles.cardHeader}>
+                 <Text style={styles.headName}>{item.HouseholdHeadName}</Text>
+                 <View style={styles.statusBadge}>
+                    <Text style={styles.statusText}>PENDING</Text>
+                 </View>
+              </View>
+              <Text style={styles.info}>📍 Barangay: {item.Barangay}</Text>
+              <Text style={styles.info}>📞 Contact: {item.PhoneNumber}</Text>
+            </View>
+          )}
+          ListEmptyComponent={
+            <View style={styles.center}>
+               <Text style={styles.empty}>No active incidents found.</Text>
+               <Text style={{color: '#999', fontSize: 12}}>Pull down to refresh</Text>
+            </View>
+          }
+        />
+      )}
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: { flex: 1, backgroundColor: '#f0f2f5' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  header: { padding: 25, backgroundColor: '#d32f2f', paddingTop: 60 },
+  title: { fontSize: 24, fontWeight: 'bold', color: '#fff' },
+  subtitle: { fontSize: 14, color: '#ffcdd2', fontWeight: '500' },
+  card: {
+    backgroundColor: '#fff',
+    padding: 18,
+    marginHorizontal: 15,
+    marginTop: 12,
+    borderRadius: 12,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
+  headName: { fontSize: 18, fontWeight: 'bold', color: '#1a1a1a' },
+  statusBadge: { backgroundColor: '#fff3e0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
+  statusText: { color: '#ef6c00', fontSize: 10, fontWeight: 'bold' },
+  info: { fontSize: 14, color: '#4b5563', marginTop: 4 },
+  empty: { textAlign: 'center', color: '#9ca3af', fontWeight: '600' }
 });
