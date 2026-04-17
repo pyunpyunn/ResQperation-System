@@ -8,14 +8,7 @@ import { Head, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        login: '',
-=======
-import { Head, Link, useForm } from '@inertiajs/react';
-
-export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
         password: '',
         remember: false,
     });
@@ -40,27 +33,26 @@ export default function Login({ status, canResetPassword }) {
 
             {status && (
                 <div className="mb-4 rounded-[1.5rem] bg-safe/10 p-4 text-base font-semibold text-safe">
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                     {status}
                 </div>
             )}
 
             <form onSubmit={submit} className="space-y-6">
                 <div>
-                    <InputLabel htmlFor="login" value="Email or username" />
+                    <InputLabel htmlFor="email" value="Email Address" />
 
                     <TextInput
-                        id="login"
-                        type="text"
-                        name="login"
-                        value={data.login}
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={data.email}
                         className="mt-1 block w-full"
                         autoComplete="username"
                         isFocused={true}
-                        onChange={(e) => setData('login', e.target.value)}
+                        onChange={(e) => setData('email', e.target.value)}
                     />
 
-                    <InputError message={errors.login} className="mt-2" />
+                    <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div>
@@ -102,22 +94,10 @@ export default function Login({ status, canResetPassword }) {
                 <PrimaryButton className="w-full" disabled={processing}>
                     Log in
                 </PrimaryButton>
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="flex items-center justify-between gap-4">
-                    <label className="flex items-center gap-2">
+            </form>
+        </GuestLayout>
+    );
+}
                         <Checkbox
                             name="remember"
                             checked={data.remember}
