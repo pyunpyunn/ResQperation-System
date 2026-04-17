@@ -332,10 +332,13 @@ export default function AuthenticatedLayout({ children, header, tabs, tabRoute, 
                                     ) : (
                                         <path d="M9 6l6 6-6 6" />
                                     )}
-=======
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Navigation Items */}
+                    <nav className="flex-1 space-y-4 px-3 pb-6">
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -448,7 +451,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                         strokeWidth="2"
                                         d="M6 18L18 6M6 6l12 12"
                                     />
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                                 </svg>
                             </button>
                         </div>

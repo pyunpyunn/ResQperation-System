@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import defaultTheme from 'tailwindcss/defaultTheme';
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
 import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
@@ -16,7 +12,6 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-<<<<<<< HEAD
                 sans: ['Inter', 'system-ui', 'sans-serif'],
             },
             colors: {
@@ -71,18 +66,10 @@ export default {
                     lineHeight: '1.43',
                     fontWeight: '500',
                 }],
-=======
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
-            },
         },
     },
 
-<<<<<<< HEAD
     plugins: [
         forms,
     ],
-=======
-    plugins: [forms],
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
 };

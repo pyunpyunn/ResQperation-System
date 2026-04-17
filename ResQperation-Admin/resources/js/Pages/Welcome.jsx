@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿import { Head, Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 export default function Welcome({ auth }) {
     return (
