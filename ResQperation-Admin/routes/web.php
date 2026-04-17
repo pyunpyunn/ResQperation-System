@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 // 2. Change this static function to use your Controller
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth'])
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
