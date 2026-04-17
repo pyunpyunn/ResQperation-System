@@ -19,14 +19,22 @@ export default function ForgotPassword({ status }) {
         <GuestLayout>
             <Head title="Forgot Password" />
 
+<<<<<<< HEAD
             <div className="mb-4 text-base text-on-surface/80">
+=======
+            <div className="mb-4 text-sm text-gray-600">
+>>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                 Forgot your password? No problem. Just let us know your email
                 address and we will email you a password reset link that will
                 allow you to choose a new one.
             </div>
 
             {status && (
+<<<<<<< HEAD
                 <div className="mb-4 text-base font-semibold text-safe">
+=======
+                <div className="mb-4 text-sm font-medium text-green-600">
+>>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                     {status}
                 </div>
             )}
