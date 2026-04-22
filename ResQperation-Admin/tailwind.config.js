@@ -2,6 +2,7 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -15,13 +16,13 @@ export default {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
             },
             colors: {
-                surface: '#F7F9FB',
-                'surface-container-low': '#F2F4F6',
-                'surface-container-lowest': '#FFFFFF',
-                'surface-container-high': '#E6E8EA',
-                'on-surface': '#191C1E',
-                primary: '#000000',
-                'primary-container': '#111C2D',
+                surface: 'var(--color-surface, #F7F9FB)',
+                'surface-container-low': 'var(--color-surface-container-low, #F2F4F6)',
+                'surface-container-lowest': 'var(--color-surface-container-lowest, #FFFFFF)',
+                'surface-container-high': 'var(--color-surface-container-high, #E6E8EA)',
+                'on-surface': 'var(--color-on-surface, #191C1E)',
+                primary: 'var(--color-primary, #000000)',
+                'primary-container': 'var(--color-primary-container, #111C2D)',
                 safe: '#10B981',
                 critical: '#EF4444',
                 evacuate: '#F59E0B',
@@ -67,6 +68,8 @@ export default {
                     fontWeight: '500',
                 }],
         },
+    },
+
     },
 
     plugins: [

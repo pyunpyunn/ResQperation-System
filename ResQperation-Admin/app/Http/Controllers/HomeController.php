@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Welcome');
+        // Redirect to dashboard if authenticated, otherwise redirect to login
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+        
+        return redirect()->route('login');
     }
 }

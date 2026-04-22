@@ -69,21 +69,12 @@ const Content = ({
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-<<<<<<< HEAD
                     className={`absolute z-50 mt-2 rounded-[1.5rem] shadow-ambient ${alignmentClasses} ${widthClasses}`}
-=======
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                     onClick={() => setOpen(false)}
                 >
                     <div
                         className={
-<<<<<<< HEAD
                             `rounded-[1.5rem] bg-surface-container-lowest ${contentClasses}`
-=======
-                            `rounded-md ring-1 ring-black ring-opacity-5 ` +
-                            contentClasses
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                         }
                     >
                         {children}

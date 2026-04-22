@@ -18,8 +18,3 @@ export default function PrimaryButton({
         </button>
     );
 }
-        >
-            {children}
-        </button>
-    );
-}

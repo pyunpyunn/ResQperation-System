@@ -1,6 +1,6 @@
 import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
@@ -22,9 +22,6 @@ export default function VerifyEmail({ status }) {
 
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-base font-semibold text-safe">
-=======
-                <div className="mb-4 text-sm font-medium text-green-600">
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                     A new verification link has been sent to the email address
                     you provided during registration.
                 </div>

@@ -2,7 +2,7 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -25,9 +25,6 @@ export default function ForgotPassword({ status }) {
 
             {status && (
                 <div className="mb-4 text-base font-semibold text-safe">
-=======
-                <div className="mb-4 text-sm font-medium text-green-600">
->>>>>>> b493ebc9962248d022f06b14238e791f9ad4bcbc
                     {status}
                 </div>
             )}
