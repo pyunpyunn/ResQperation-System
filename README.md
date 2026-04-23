@@ -1,33 +1,163 @@
-# Welcome to your Expo app 👋
+# ResQperation: Disaster Response & Household Safety Platform
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Capstone Project** — Associate Degree Computer Technology Major in Software Development
 
-## Get started
+## Project Overview
 
-1. Install dependencies
+ResQperation is a comprehensive platform for coordinating disaster response, managing rescue operations, and connecting households with emergency resources. The system consists of four interconnected applications built with modern frameworks.
 
+## Architecture
+
+### Four-Application Structure
+
+```
+CAPSTONE/
+├── ResQperation-Admin/         Laravel + Inertia.js (Admin Dashboard)
+├── ResQperation-Backend/       Laravel API (RESTful Backend)
+├── ResQperation-Household/     React Native/Expo (Household App)
+├── ResQperation-Rescuer/       React Native/Expo (Responder App)
+└── docs/                       Database schema, ERD, documentation
+```
+
+### Application Descriptions
+
+**ResQperation-Admin** — Coordinator Dashboard
+- Disaster event management and tracking
+- Responder and team assignment
+- Household request prioritization and dispatch
+- Real-time status monitoring
+- Built with Laravel, Inertia.js, React, TailwindCSS
+
+**ResQperation-Backend** — API Server
+- RESTful API (v1) for all client applications
+- Core business logic and data persistence
+- Authentication via Laravel Sanctum
+- CORS-enabled for cross-platform access
+- Built with Laravel 11
+
+**ResQperation-Household** — Mobile App for Households
+- Submit emergency requests
+- Track request status
+- Real-time location sharing
+- Communication with responders
+- Built with React Native, Expo, TypeScript
+
+**ResQperation-Rescuer** — Mobile App for Responders
+- Receive and accept rescue tasks
+- Navigate to locations
+- Update task status
+- Communicate with coordinators and households
+- Built with React Native, Expo, TypeScript
+
+## Technology Stack
+
+- **Backend**: PHP 8.3, Laravel 11, MySQL/PostgreSQL
+- **Admin Frontend**: React, TypeScript, TailwindCSS, Inertia.js
+- **Mobile**: React Native, Expo, TypeScript, TailwindCSS
+- **API**: RESTful, JSON, Laravel Sanctum (authentication)
+- **Version Control**: Git
+
+## Getting Started
+
+### Prerequisites
+- PHP 8.3+
+- Node.js 18+ and npm
+- MySQL/PostgreSQL
+- Expo Go (for mobile testing)
+
+### Setup Instructions
+
+Each application has its own setup process. See the README in each folder:
+
+1. **Backend Setup** (start here)
    ```bash
-   npm install
+   cd ResQperation-Backend
+   composer install
+   cp .env.example .env
+   php artisan key:generate
+   php artisan migrate
+   php artisan serve
    ```
 
-2. Start the app
-
+2. **Admin Setup**
    ```bash
+   cd ResQperation-Admin
+   composer install
+   npm install
+   cp .env.example .env
+   npm run dev
+   ```
+
+3. **Mobile Apps**
+   ```bash
+   cd ResQperation-Household  # or ResQperation-Rescuer
+   npm install
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## Database Schema
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The system includes 28 core tables organized across:
+- User Management (users, responders, households, household_members)
+- Operations (disaster_events, rescue_teams, incoming_requests)
+- Reference Data (severity_levels, status_lookups, request_types)
+- Integration (safe_track_accounts, access_tokens)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+See [docs/SCHEMA.md](docs/SCHEMA.md) for complete schema documentation and [docs/README.md](docs/README.md) for the ERD.
 
-## Get a fresh project
+## Project Structure & Code Quality
 
-When you're ready, run:
+- **Real Codebase**: ~400 files of production code
+- **Architecture**: Modular four-project separation
+- **Backend**: Versioned API (v1), middleware for CORS and rate limiting
+- **Mobile**: Expo file-based routing, hooks-based components
+- **Admin**: React component architecture with Inertia.js integration
+
+✅ **This project is appropriately scoped for an associate degree capstone.**
+
+## Testing
+
+- Backend: PHPUnit tests in `ResQperation-Backend/tests/`
+- Frontend: Component tests can be added with Vitest
+- Mobile: Expo testing framework
+
+Run tests:
+```bash
+# Laravel tests
+cd ResQperation-Backend
+php artisan test
+
+# Frontend tests (when configured)
+npm test
+```
+
+## Deployment
+
+- Backend: Deploy to hosting with PHP 8.3+ and MySQL/PostgreSQL
+- Admin: Build with Vite and deploy static files to CDN/web server
+- Mobile: Publish to Expo Build or native build
+- All apps use environment variables (.env) for configuration
+
+## Documentation
+
+- [Database Schema](docs/SCHEMA.md)
+- [Backend API](ResQperation-Backend/README.md)
+- [Admin Guide](ResQperation-Admin/README.md)
+- [Mobile Apps](ResQperation-Household/README.md)
+
+## Cleanup Status ✅
+
+**April 23, 2026 - Major cleanup completed:**
+- Removed root-level folder bleed (app/, assets/, components/, etc.)
+- Removed orphaned config files from root
+- Deleted utility/debug files (verify_bom.php, nullable())
+- Removed Blade cache files from committed source
+- Removed Expo starter placeholder components and images
+- Updated .gitignore across all projects
+- Created docs/ folder with schema templates
+
+Remaining: Add custom assets and finalized schema files to docs/.
+
 
 ```bash
 npm run reset-project
