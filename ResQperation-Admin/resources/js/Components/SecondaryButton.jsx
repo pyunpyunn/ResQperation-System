@@ -20,10 +20,3 @@ export default function SecondaryButton({
         </button>
     );
 }
-            }
-            disabled={disabled}
-        >
-            {children}
-        </button>
-    );
-}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\Auth\HqAccessTokenService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,11 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        private readonly HqAccessTokenService $tokenService,
+    ) {
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -51,6 +57,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        $this->tokenService->revokeFromRequest($request);
         Auth::logout();
 
         $user->delete();
@@ -58,6 +65,7 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return Redirect::route('login')
+            ->withCookie($this->tokenService->forgetCookie());
     }
 }

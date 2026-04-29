@@ -103,6 +103,3 @@ select {
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

@@ -1,37 +1,22 @@
 # ResQperation Project Documentation
 
-This folder contains the official documentation for the ResQperation capstone project, including database schemas, ERDs, and architectural overviews.
+This folder contains the official documentation for the ResQperation capstone project, including database schemas, API notes, and deployment guidance.
 
 ## Contents
 
-- **schema.sql** — Complete SQL schema for all 28 tables across the ResQperation system
-- **ERD.png/pdf** — Entity Relationship Diagram showing table relationships and cardinality
-- **API.md** — Backend API documentation (v1 endpoints, authentication, response formats)
-- **ARCHITECTURE.md** — System architecture overview and inter-service communication
+- **schema.sql** - Complete SQL schema for all 28 tables across the ResQperation system
+- **ERD.png/pdf** - Entity Relationship Diagram showing table relationships and cardinality
+- **API.md** - Backend API documentation
+- **DEPLOYMENT.md** - Verified deployment and release checklist for all four apps
 
 ## Project Structure
 
 ### Four Applications
 
-1. **ResQperation-Admin** (Laravel + Inertia.js)
-   - Dashboard for disaster response coordination
-   - User, responder, and request management
-   - Location: `ResQperation-Admin/`
-
-2. **ResQperation-Backend** (Laravel API)
-   - RESTful API backend (v1)
-   - Core business logic and database
-   - Location: `ResQperation-Backend/`
-
-3. **ResQperation-Household** (React Native/Expo)
-   - Mobile app for household members
-   - Request submission and status tracking
-   - Location: `ResQperation-Household/`
-
-4. **ResQperation-Rescuer** (React Native/Expo)
-   - Mobile app for rescue responders
-   - Disaster event tracking and task management
-   - Location: `ResQperation-Rescuer/`
+1. **ResQperation-Admin** (`ResQperation-Admin/`)
+2. **ResQperation-Backend** (`ResQperation-Backend/`)
+3. **ResQperation-Household** (`ResQperation-Household/`)
+4. **ResQperation-Rescuer** (`ResQperation-Rescuer/`)
 
 ## Database Schema Overview
 
@@ -46,8 +31,4 @@ See `schema.sql` for complete table definitions with all columns, indexes, and r
 
 ## Setup Instructions
 
-See each project's README for environment setup and deployment instructions:
-- [Admin Setup](../ResQperation-Admin/README.md)
-- [Backend Setup](../ResQperation-Backend/README.md)
-- [Household Setup](../ResQperation-Household/README.md)
-- [Rescuer Setup](../ResQperation-Rescuer/README.md)
+Use the root README for the project overview and [DEPLOYMENT.md](DEPLOYMENT.md) for the current deployment workflow.

@@ -1,180 +1,165 @@
-# ResQperation: Disaster Response & Household Safety Platform
+# ResQperation: Disaster Response and Household Safety Platform
 
-**Capstone Project** — Associate Degree Computer Technology Major in Software Development
+Capstone Project - Associate Degree in Computer Technology, Major in Software Development
 
 ## Project Overview
 
-ResQperation is a comprehensive platform for coordinating disaster response, managing rescue operations, and connecting households with emergency resources. The system consists of four interconnected applications built with modern frameworks.
+ResQperation is a disaster response platform for coordinating rescue operations, managing incidents, and helping households request emergency assistance.
+
+The project is organized into four connected applications:
+
+- 1 shared backend API
+- 1 admin web application
+- 2 mobile client applications
 
 ## Architecture
 
 ### Four-Application Structure
 
-```
+```text
 CAPSTONE/
-├── ResQperation-Admin/         Laravel + Inertia.js (Admin Dashboard)
-├── ResQperation-Backend/       Laravel API (RESTful Backend)
-├── ResQperation-Household/     React Native/Expo (Household App)
-├── ResQperation-Rescuer/       React Native/Expo (Responder App)
-└── docs/                       Database schema, ERD, documentation
+|-- ResQperation-Admin/         Laravel + Inertia admin web app
+|-- ResQperation-Backend/       Shared Laravel API backend
+|-- ResQperation-Household/     Expo / React Native household app
+|-- ResQperation-Rescuer/       Expo / React Native rescuer app
+`-- docs/                       Database schema, ERD, documentation
 ```
 
-### Application Descriptions
+### How To Understand The Folders
 
-**ResQperation-Admin** — Coordinator Dashboard
-- Disaster event management and tracking
-- Responder and team assignment
-- Household request prioritization and dispatch
-- Real-time status monitoring
-- Built with Laravel, Inertia.js, React, TailwindCSS
+The part that usually causes confusion is `ResQperation-Admin`.
 
-**ResQperation-Backend** — API Server
-- RESTful API (v1) for all client applications
-- Core business logic and data persistence
-- Authentication via Laravel Sanctum
-- CORS-enabled for cross-platform access
-- Built with Laravel 11
+`ResQperation-Backend` is the main backend service for the whole capstone. It is the shared API server that stores data, runs business logic, and exposes endpoints for the other applications.
 
-**ResQperation-Household** — Mobile App for Households
+`ResQperation-Admin` is different. It is a full-stack web application built with Laravel, Inertia, and React. Because Laravel handles both server-side features and the browser UI in the same project, this folder contains:
+
+- backend-style code such as routes, controllers, middleware, and authentication
+- frontend-style code such as React components, pages, JavaScript, and CSS
+
+So the admin folder is not "wrong" for looking like both a backend and a frontend. That is normal for a Laravel web app.
+
+The simplest way to describe the project is:
+
+- `ResQperation-Backend` = shared backend API
+- `ResQperation-Admin` = admin web app with both backend and frontend parts
+- `ResQperation-Household` = household mobile frontend
+- `ResQperation-Rescuer` = rescuer mobile frontend
+
+## Application Descriptions
+
+### ResQperation-Backend
+
+Shared API server for the whole system.
+
+- Provides REST API endpoints for client applications
+- Handles business logic and data persistence
+- Uses Laravel Sanctum for authentication
+- Supports cross-platform communication through JSON APIs
+
+### ResQperation-Admin
+
+Admin and coordinator dashboard.
+
+- Manages disaster events and operational data
+- Handles responder and household monitoring
+- Supports dispatching, tracking, and account management
+- Uses Laravel on the server side and React through Inertia on the frontend
+
+### ResQperation-Household
+
+Mobile app for households.
+
 - Submit emergency requests
 - Track request status
-- Real-time location sharing
-- Communication with responders
-- Built with React Native, Expo, TypeScript
+- Share location and communicate with responders
 
-**ResQperation-Rescuer** — Mobile App for Responders
-- Receive and accept rescue tasks
-- Navigate to locations
-- Update task status
-- Communicate with coordinators and households
-- Built with React Native, Expo, TypeScript
+### ResQperation-Rescuer
+
+Mobile app for responders.
+
+- Receive rescue tasks
+- Navigate to assigned locations
+- Update task progress and status
 
 ## Technology Stack
 
-- **Backend**: PHP 8.3, Laravel 11, MySQL/PostgreSQL
-- **Admin Frontend**: React, TypeScript, TailwindCSS, Inertia.js
-- **Mobile**: React Native, Expo, TypeScript, TailwindCSS
-- **API**: RESTful, JSON, Laravel Sanctum (authentication)
-- **Version Control**: Git
+- Shared Backend API: PHP, Laravel, MySQL or PostgreSQL, Sanctum
+- Admin Web App: Laravel, Inertia.js, React, TypeScript, Tailwind CSS, Vite
+- Mobile Apps: React Native, Expo, TypeScript
+- Version Control: Git
 
 ## Getting Started
 
-### Prerequisites
-- PHP 8.3+
-- Node.js 18+ and npm
-- MySQL/PostgreSQL
-- Expo Go (for mobile testing)
+Each application has its own setup process.
 
-### Setup Instructions
+### 1. Backend Setup
 
-Each application has its own setup process. See the README in each folder:
+```bash
+cd ResQperation-Backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-1. **Backend Setup** (start here)
-   ```bash
-   cd ResQperation-Backend
-   composer install
-   cp .env.example .env
-   php artisan key:generate
-   php artisan migrate
-   php artisan serve
-   ```
+### 2. Admin Setup
 
-2. **Admin Setup**
-   ```bash
-   cd ResQperation-Admin
-   composer install
-   npm install
-   cp .env.example .env
-   npm run dev
-   ```
+```bash
+cd ResQperation-Admin
+composer install
+npm install
+cp .env.example .env
+npm run dev
+```
 
-3. **Mobile Apps**
-   ```bash
-   cd ResQperation-Household  # or ResQperation-Rescuer
-   npm install
-   npx expo start
-   ```
+### 3. Mobile App Setup
+
+```bash
+cd ResQperation-Household
+npm install
+npx expo start
+```
+
+Use the same process for `ResQperation-Rescuer`.
 
 ## Database Schema
 
-The system includes 28 core tables organized across:
-- User Management (users, responders, households, household_members)
-- Operations (disaster_events, rescue_teams, incoming_requests)
-- Reference Data (severity_levels, status_lookups, request_types)
-- Integration (safe_track_accounts, access_tokens)
+The system includes core tables for:
 
-See [docs/SCHEMA.md](docs/SCHEMA.md) for complete schema documentation and [docs/README.md](docs/README.md) for the ERD.
+- user and account management
+- disaster operations and rescue requests
+- status and reference data
+- integration and access tokens
 
-## Project Structure & Code Quality
-
-- **Real Codebase**: ~400 files of production code
-- **Architecture**: Modular four-project separation
-- **Backend**: Versioned API (v1), middleware for CORS and rate limiting
-- **Mobile**: Expo file-based routing, hooks-based components
-- **Admin**: React component architecture with Inertia.js integration
-
-✅ **This project is appropriately scoped for an associate degree capstone.**
+See [docs/SCHEMA.md](docs/SCHEMA.md) for the schema and [docs/README.md](docs/README.md) for supporting documentation.
 
 ## Testing
 
-- Backend: PHPUnit tests in `ResQperation-Backend/tests/`
-- Frontend: Component tests can be added with Vitest
-- Mobile: Expo testing framework
+- Backend tests: `ResQperation-Backend/tests/`
+- Admin tests: `ResQperation-Admin/tests/`
+- Mobile apps: Expo-based testing can be added as needed
 
-Run tests:
+Example:
+
 ```bash
-# Laravel tests
 cd ResQperation-Backend
 php artisan test
-
-# Frontend tests (when configured)
-npm test
 ```
 
 ## Deployment
 
-- Backend: Deploy to hosting with PHP 8.3+ and MySQL/PostgreSQL
-- Admin: Build with Vite and deploy static files to CDN/web server
-- Mobile: Publish to Expo Build or native build
-- All apps use environment variables (.env) for configuration
+- Backend: deploy as the shared Laravel API service
+- Admin: deploy as a Laravel web application with built Vite assets
+- Mobile apps: publish through Expo or build native app packages
+- Deployment guide: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+- Pre-release verification: `powershell -ExecutionPolicy Bypass -File .\scripts\verify-deploy.ps1`
 
 ## Documentation
 
+- [Root Docs](docs/README.md)
 - [Database Schema](docs/SCHEMA.md)
 - [Backend API](ResQperation-Backend/README.md)
 - [Admin Guide](ResQperation-Admin/README.md)
-- [Mobile Apps](ResQperation-Household/README.md)
-
-## Cleanup Status ✅
-
-**April 23, 2026 - Major cleanup completed:**
-- Removed root-level folder bleed (app/, assets/, components/, etc.)
-- Removed orphaned config files from root
-- Deleted utility/debug files (verify_bom.php, nullable())
-- Removed Blade cache files from committed source
-- Removed Expo starter placeholder components and images
-- Updated .gitignore across all projects
-- Created docs/ folder with schema templates
-
-Remaining: Add custom assets and finalized schema files to docs/.
-
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Household App](ResQperation-Household/README.md)
+- [Rescuer App](ResQperation-Rescuer/README.md)

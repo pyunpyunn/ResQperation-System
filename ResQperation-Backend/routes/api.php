@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\HouseholdController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,26 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/test', function () {
     return response()->json(['message' => 'ResQperation API is connected!']);
+});
+
+Route::get('/health', function () {
+    try {
+        DB::connection()->getPdo();
+
+        return response()->json([
+            'status' => 'ok',
+            'database' => 'ok',
+            'app' => config('app.name'),
+            'timestamp' => now()->toIso8601String(),
+        ]);
+    } catch (\Throwable $exception) {
+        return response()->json([
+            'status' => 'degraded',
+            'database' => 'error',
+            'app' => config('app.name'),
+            'timestamp' => now()->toIso8601String(),
+        ], 503);
+    }
 });
 
 // Household routes - allows mobile apps to get and send household data

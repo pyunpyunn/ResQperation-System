@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'hq_auth' => [
+        'cookie_name' => env('HQ_AUTH_COOKIE_NAME', 'resq_hq_access'),
+        'ttl_minutes' => (int) env('HQ_AUTH_TTL_MINUTES', 480),
+        'issuer' => env('HQ_AUTH_ISSUER', env('APP_URL', 'resqperation-hq')),
+    ],
+
 ];

@@ -32,7 +32,7 @@ export default function UpdateProfileInformation({
                 </h2>
 
                 <p className="mt-1 text-base text-on-surface/80">
-                    Update your account's profile information and email address.
+                    Update your account profile and contact email while keeping the issued administrator ID fixed.
                 </p>
             </header>
 
@@ -51,6 +51,28 @@ export default function UpdateProfileInformation({
                     />
 
                     <InputError className="mt-2" message={errors.name} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="login_id" value="Administrator ID" />
+
+                    <TextInput
+                        id="login_id"
+                        className="mt-1 block w-full"
+                        value={user.login_id || ''}
+                        disabled
+                    />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="role" value="Access Role" />
+
+                    <TextInput
+                        id="role"
+                        className="mt-1 block w-full"
+                        value={user.role === 'super_admin' ? 'Super Admin' : 'HQ Admin'}
+                        disabled
+                    />
                 </div>
 
                 <div>
