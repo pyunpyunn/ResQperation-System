@@ -1,0 +1,32 @@
+{
+  "name": "resqperation-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ionic serve",
+    "build": "ionic build",
+    "start": "ionic serve"
+  },
+  "dependencies": {
+    "@capacitor/app": "^7.1.0",
+    "@capacitor/core": "^7.4.4",
+    "@capacitor/haptics": "^7.0.2",
+    "@capacitor/keyboard": "^7.0.3",
+    "@capacitor/status-bar": "^7.0.3",
+    "@ionic/react": "^8.7.5",
+    "@ionic/react-router": "^8.7.5",
+    "axios": "^1.13.2",
+    "ionicons": "^7.4.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.4",
+    "@ionic/cli": "^7.2.1",
+    "@vitejs/plugin-react": "^5.0.0",
+    "vite": "^8.0.0"
+  }
+}

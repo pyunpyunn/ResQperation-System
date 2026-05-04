@@ -36,8 +36,8 @@ ResQperation uses **Laravel Sanctum** for token-based authentication. After logi
 Request:
 ```json
 {
-  "email": "user@example.com",
-  "password": "password123"
+  "login_id": "RTR-24001",
+  "password": "temporary-password"
 }
 ```
 
@@ -47,39 +47,14 @@ Response (200 OK):
   "user": {
     "id": 1,
     "name": "John Doe",
-    "email": "user@example.com",
-    "role": "responder"
+    "login_id": "RTR-24001",
+    "role": "rescuer"
   },
   "token": "1|AbCdEfGhIjKlMnOpQrStUvWxYz..."
 }
 ```
 
-### Register
-
-**Endpoint**: `POST /auth/register`
-
-Request:
-```json
-{
-  "name": "Jane Smith",
-  "email": "jane@example.com",
-  "password": "password123",
-  "account_type": "household" // or "responder"
-}
-```
-
-Response (201 Created):
-```json
-{
-  "message": "Registration successful",
-  "user": {
-    "id": 2,
-    "name": "Jane Smith",
-    "email": "jane@example.com"
-  },
-  "token": "2|XyZaBcDeFgHiJkLmNoPqRsTuVw..."
-}
-```
+Accounts are created/provided by HQ. There is no public self-registration endpoint.
 
 ### Using Token
 
@@ -688,7 +663,7 @@ Response (200 OK):
 
 ## Rate Limiting
 
-- **Public endpoints** (health, register): Unlimited
+- **Public endpoints** (health, login): Unlimited
 - **Authenticated endpoints**: 60 requests per minute per user
 - **Admin endpoints**: 100 requests per minute per admin
 
@@ -756,7 +731,7 @@ curl http://localhost:8000/api/v1/health
 # Login
 curl -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"password123"}'
+  -d '{"login_id":"RTR-24001","password":"temporary-password"}'
 
 # Get current user
 curl -H "Authorization: Bearer YOUR_TOKEN" \
@@ -778,7 +753,7 @@ See `.vscode/extensions/thunder-client/` or `.vscode/rest-client.http` for pre-b
 
 ## Support & Issues
 
-- **Documentation**: See [Backend README](../ResQperation-Backend/README.md)
+- **Documentation**: See [Backend README](../backend/README.md)
 - **Issues**: Report bugs in the project's issue tracker
 - **Questions**: Contact the development team
 

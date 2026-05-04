@@ -1,6 +1,6 @@
 # Contributing to ResQperation
 
-Thank you for contributing to the ResQperation disaster response platform! This guide provides standards and best practices for maintaining code quality across all four applications.
+Thank you for contributing to the ResQperation disaster response platform! This guide provides standards and best practices for maintaining code quality across the backend, web, and mobile applications.
 
 ---
 
@@ -59,7 +59,7 @@ docs/*            - Documentation updates
 
 ## Code Standards
 
-### Laravel (Backend & Admin)
+### Laravel (Backend)
 
 **PHP Style**: PSR-12
 
@@ -158,7 +158,7 @@ class DisasterEvent extends Model
 }
 ```
 
-### React / TypeScript (Frontend & Mobile)
+### React / Ionic (Frontend & Mobile)
 
 **Style**: Functional components with hooks
 
@@ -261,7 +261,7 @@ export const useDisasters = () => {
 </div>
 ```
 
-**Mobile Apps**: TailwindCSS (Expo)
+**Mobile App**: Ionic components and scoped CSS
 
 ```tsx
 <View className="bg-white rounded-lg p-4 shadow-sm">
@@ -504,16 +504,13 @@ Update relevant README when:
 ## Project Setup
 
 ### Backend
-See [ResQperation-Backend/README.md](../ResQperation-Backend/README.md)
+See [backend/README.md](backend/README.md)
 
-### Admin Dashboard
-See [ResQperation-Admin/README.md](../ResQperation-Admin/README.md)
+### Web
+See [README.md](README.md)
 
-### Household App
-See [ResQperation-Household/README.md](../ResQperation-Household/README.md)
-
-### Rescuer App
-See [ResQperation-Rescuer/README.md](../ResQperation-Rescuer/README.md)
+### Mobile
+See [README.md](README.md)
 
 ---
 

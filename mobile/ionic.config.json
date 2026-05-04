@@ -1,0 +1,7 @@
+{
+  "name": "resqperation-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
