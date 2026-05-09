@@ -14,6 +14,8 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertRedirect('/login');
+        $response
+            ->assertOk()
+            ->assertJsonPath('type', 'ResQperation Laravel API');
     }
 }
