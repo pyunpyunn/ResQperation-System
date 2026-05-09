@@ -3,109 +3,81 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use App\Services\Auth\HqAccessTokenService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Request;
-use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_login_screen_can_be_rendered(): void
+    public function test_mobile_user_can_authenticate_with_api_credentials(): void
     {
-        $response = $this->get('/login');
+        $user = User::factory()
+            ->role(User::ROLE_RESCUER)
+            ->create([
+                'username' => 'RTR-TEST',
+            ]);
 
-        $response->assertStatus(200);
-    }
-
-    public function test_users_can_authenticate_using_the_login_screen(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->post('/login', [
-            'login_id' => $user->login_id,
+        $response = $this->postJson('/api/auth/login', [
+            'login_id' => 'RTR-TEST',
             'password' => 'password',
         ]);
 
-        $response->assertRedirect(route('dashboard', absolute: false));
-        $response->assertCookie(config('services.hq_auth.cookie_name'));
-    }
-
-    public function test_authenticated_requests_accept_a_signed_bearer_token(): void
-    {
-        $user = User::factory()->create();
-        $issuedToken = app(HqAccessTokenService::class)->issueForUser(
-            $user,
-            Request::create('/login', 'POST', server: ['HTTP_USER_AGENT' => 'PHPUnit']),
-        );
-
-        $this->withHeader('Authorization', 'Bearer '.$issuedToken['jwt'])
-            ->get('/dashboard')
+        $response
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
-                ->component('Dashboard')
-                ->where('auth.user.login_id', $user->login_id)
-                ->where('auth.user.role', $user->role)
-            );
+            ->assertJsonPath('user.id', $user->user_id)
+            ->assertJsonPath('user.login_id', 'RTR-TEST')
+            ->assertJsonPath('user.role', User::ROLE_RESCUER)
+            ->assertJsonStructure([
+                'token',
+                'user' => ['id', 'name', 'login_id', 'email', 'role', 'role_name'],
+            ]);
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password(): void
+    public function test_mobile_login_rejects_invalid_password(): void
     {
-        $user = User::factory()->create();
+        User::factory()->create([
+            'username' => 'RTR-TEST',
+        ]);
 
-        $response = $this->post('/login', [
-            'login_id' => $user->login_id,
+        $this->postJson('/api/auth/login', [
+            'login_id' => 'RTR-TEST',
             'password' => 'wrong-password',
-        ]);
-
-        $this->assertGuest();
-        $response->assertSessionHasErrors('login_id');
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('login_id');
     }
 
-    public function test_super_admin_is_redirected_to_the_super_admin_dashboard(): void
+    public function test_authenticated_api_request_accepts_sanctum_bearer_token(): void
     {
-        $user = User::factory()->create([
-            'role' => User::ROLE_SUPER_ADMIN,
-        ]);
+        $user = User::factory()
+            ->role(User::ROLE_HOUSEHOLD_RESIDENT)
+            ->create([
+                'username' => 'HHR-TEST',
+            ]);
 
-        $response = $this->post('/login', [
-            'login_id' => $user->login_id,
-            'password' => 'password',
-        ]);
+        $token = $user->createToken('test-client')->plainTextToken;
 
-        $response->assertRedirect(route('super-admin.dashboard', absolute: false));
-    }
-
-    public function test_super_admin_dashboard_receives_the_authenticated_user_props(): void
-    {
-        $user = User::factory()->create([
-            'role' => User::ROLE_SUPER_ADMIN,
-        ]);
-
-        $issuedToken = app(HqAccessTokenService::class)->issueForUser(
-            $user,
-            Request::create('/login', 'POST', server: ['HTTP_USER_AGENT' => 'PHPUnit']),
-        );
-
-        $this->withHeader('Authorization', 'Bearer '.$issuedToken['jwt'])
-            ->get('/super-admin/dashboard')
+        $this->withToken($token)
+            ->getJson('/api/auth/me')
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
-                ->component('SuperAdminDashboard')
-                ->where('auth.user.login_id', $user->login_id)
-                ->where('auth.user.role', User::ROLE_SUPER_ADMIN)
-            );
+            ->assertJsonPath('user.id', $user->user_id)
+            ->assertJsonPath('user.login_id', 'HHR-TEST')
+            ->assertJsonPath('user.role', User::ROLE_HOUSEHOLD_RESIDENT);
     }
 
-    public function test_users_can_logout(): void
+    public function test_users_can_logout_from_the_api(): void
     {
         $user = User::factory()->create();
+        $token = $user->createToken('test-client');
 
-        $response = $this->actingAs($user)->post('/logout');
+        $this->withToken($token->plainTextToken)
+            ->postJson('/api/auth/logout')
+            ->assertOk()
+            ->assertJsonPath('message', 'Logged out');
 
-        $this->assertGuest();
-        $response->assertRedirect('/login');
+        $this->assertDatabaseMissing('personal_access_tokens', [
+            'id' => $token->accessToken->id,
+        ]);
     }
 }

@@ -4,7 +4,7 @@ Capstone Project - Associate Degree in Computer Technology, Major in Software De
 
 ## Project Overview
 
-ResQperation is organized around one shared backend, one web frontend, and one Ionic mobile app. All users authenticate through the same backend credential system. The UI changes by application and user role.
+ResQperation is organized around one shared backend, one web frontend, and one Expo mobile app. All users authenticate through the same backend credential system. The UI changes by application and user role.
 
 ## Folder Structure
 
@@ -12,7 +12,7 @@ ResQperation is organized around one shared backend, one web frontend, and one I
 resqperation-system/
 |-- backend/        Laravel API, auth, database, seeders, business logic
 |-- web/            React web frontend
-|-- mobile/         Ionic React mobile app for rescuer and household resident roles
+|-- mobile/         Expo React Native mobile app for rescuer and household resident roles
 |-- shared/         Shared API config, constants, and utilities
 |-- docs/           Documentation
 `-- README.md
@@ -37,13 +37,14 @@ The same `/api/auth/login` endpoint is used by web and mobile. After login, the 
 
 Shared Laravel backend for every client.
 
-```bash
+```powershell
 cd backend
 composer install
-cp .env.example .env
+copy .env.example .env
 php artisan key:generate
+New-Item -ItemType File -Path database/database.sqlite -Force
 php artisan migrate --seed
-php artisan serve
+composer run serve:lan
 ```
 
 ### web
@@ -60,7 +61,7 @@ Set `VITE_API_BASE_URL` if the backend is not running at `http://localhost:8000/
 
 ### mobile
 
-Single Ionic React mobile app. Rescuer and household resident screens are separated by role after login.
+Single Expo React Native mobile app. Rescuer and household resident screens are separated by role after login.
 
 ```bash
 cd mobile
@@ -68,7 +69,7 @@ npm install
 npm run dev
 ```
 
-Set `VITE_API_BASE_URL` if needed.
+Scan the QR code in Expo Go. The app auto-detects the laptop IP from Expo for local phone testing. Set `EXPO_PUBLIC_API_BASE_URL` only if you need to override the backend URL.
 
 ## Documentation
 

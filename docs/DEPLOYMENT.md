@@ -4,7 +4,7 @@ ResQperation now deploys as three application surfaces:
 
 - `backend` - Laravel API
 - `web` - React web frontend
-- `mobile` - Ionic React mobile app
+- `mobile` - Expo React Native mobile app
 
 ## Backend
 
@@ -39,10 +39,10 @@ Configure `VITE_API_BASE_URL` to point to the deployed backend API.
 ```bash
 cd mobile
 npm ci
-npm run build
+npm run dev
 ```
 
-Use Ionic/Capacitor packaging for native builds after the web build passes.
+Use Expo Go for local testing. Use EAS Build when you are ready to create installable Android or iOS builds.
 
 ## Verification
 

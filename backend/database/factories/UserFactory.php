@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -24,15 +25,19 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $role = Role::query()->firstOrCreate(
+            ['role_key' => User::ROLE_ADMIN],
+            ['role_name' => 'HQ Admin'],
+        );
+
         return [
+            'user_id' => 'USR-'.Str::upper((string) Str::uuid()),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'login_id' => fake()->unique()->numerify('##########'),
-            'role' => User::ROLE_ADMIN,
+            'username' => fake()->unique()->numerify('##########'),
+            'role_id' => $role->role_id,
             'is_active' => true,
-            'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
         ];
     }
 
@@ -41,8 +46,18 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        return $this;
+    }
+
+    public function role(string $roleKey): static
+    {
+        return $this->state(function () use ($roleKey) {
+            $role = Role::query()->firstOrCreate(
+                ['role_key' => $roleKey],
+                ['role_name' => Str::headline($roleKey)],
+            );
+
+            return ['role_id' => $role->role_id];
+        });
     }
 }

@@ -13,7 +13,7 @@ This folder contains project documentation for the ResQperation capstone project
 
 1. **backend** (`backend/`) - shared Laravel API, auth, database, seeders, and business logic
 2. **web** (`web/`) - React web frontend
-3. **mobile** (`mobile/`) - single Ionic React app for rescuer and household resident roles
+3. **mobile** (`mobile/`) - single Expo React Native app for rescuer and household resident roles
 4. **shared** (`shared/`) - shared API config, constants, and utilities
 
 ## Database Schema Overview
