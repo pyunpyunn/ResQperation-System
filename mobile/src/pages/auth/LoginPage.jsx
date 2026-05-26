@@ -17,6 +17,7 @@ import spacing from '../../theme/spacing.js';
 export default function LoginPage({ apiBaseUrl, onLogin }) {
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -71,17 +72,26 @@ export default function LoginPage({ apiBaseUrl, onLogin }) {
           />
 
           <Text style={styles.label}>Temporary password</Text>
-          <TextInput
-            onChangeText={setPassword}
-            onSubmitEditing={handleSubmit}
-            placeholder="Enter password"
-            placeholderTextColor="#7b8884"
-            returnKeyType="done"
-            secureTextEntry
-            style={styles.input}
-            textContentType="password"
-            value={password}
-          />
+          <View style={styles.passwordRow}>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={setPassword}
+              onSubmitEditing={handleSubmit}
+              placeholder="Enter password"
+              placeholderTextColor="#7b8884"
+              returnKeyType="done"
+              secureTextEntry={!isPasswordVisible}
+              style={styles.passwordInput}
+              textContentType="password"
+              value={password}
+            />
+            <Pressable onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+              <Text style={styles.passwordToggle}>
+                {isPasswordVisible ? 'Hide' : 'Show'}
+              </Text>
+            </Pressable>
+          </View>
 
           {error ? <Text style={styles.error}>{error}</Text> : null}
 
@@ -162,6 +172,29 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     minHeight: 48,
     paddingHorizontal: 14,
+  },
+  passwordRow: {
+    alignItems: 'center',
+    backgroundColor: colors.surfaceMuted,
+    borderColor: colors.borderStrong,
+    borderRadius: 6,
+    borderWidth: 1,
+    flexDirection: 'row',
+    marginBottom: spacing.lg,
+    minHeight: 48,
+    paddingHorizontal: 14,
+  },
+  passwordInput: {
+    color: colors.text,
+    flex: 1,
+    fontSize: 16,
+    minHeight: 48,
+    paddingRight: spacing.md,
+  },
+  passwordToggle: {
+    color: colors.rescuer,
+    fontSize: 14,
+    fontWeight: '800',
   },
   error: {
     backgroundColor: colors.dangerBackground,
