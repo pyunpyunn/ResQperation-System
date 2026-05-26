@@ -58,7 +58,7 @@ export async function login(loginId, password) {
   try {
     const { data } = await api.post('/auth/login', {
       login_id: loginId.trim(),
-      password,
+      password: password.trim(),
     });
 
     if (!data?.token || !data?.user) {
